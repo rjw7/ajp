@@ -1,0 +1,86 @@
+Server.....
+
+
+import java.rmi.registry.Registry;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+public class PalindromeServer extends UnicastRemoteObject implements PalindromeChecker {
+    public PalindromeServer() throws RemoteException{
+      super();  
+    }
+    @Override
+    public boolean checkPalindrome(String s) throws RemoteException {
+        // remove all non-alphanumeric characters and convert to lowercase
+        String cleanString = s.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+
+        // check if the string is equal to its reverse
+        String reversedString = new StringBuilder(cleanString).reverse().toString();
+        return cleanString.equals(reversedString);
+    }
+
+    public static void main(String[] args) {
+        try {
+            // create and export the server object
+            
+            // bind the object to an RMI registry
+            Registry registry = LocateRegistry.createRegistry(9999);
+            registry.rebind("PalindromeChecker", new PalindromeServer());
+            System.out.println("PalindromeChecker server ready.");
+        } 
+        
+        catch (RemoteException e) {
+                       System.out.println("exception"+e);
+           }
+        
+    }
+}
+
+
+
+
+Client
+
+
+
+
+import java.rmi.NotBoundException;
+import java.rmi.registry.Registry;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.RemoteException;
+
+public class PalindromeClient {
+    public static void main(String[] args)throws RemoteException{
+        PalindromeClient C=new PalindromeClient();
+        C.connectRemote();
+    }
+    public void connectRemote()throws RemoteException
+    {
+        try
+        {
+            Registry registry = LocateRegistry.getRegistry("localhost",9999);
+            PalindromeChecker checker = (PalindromeChecker) registry.lookup("PalindromeChecker");
+
+            // test some strings
+            String[] strings = {"racecar", "hello", "A man a plan a canal Panama", "12321"};
+            for (String s : strings) {
+                System.out.println(s + " is " + (checker.checkPalindrome(s) ? "" : "not ") + "a palindrome.");
+            }
+        } catch (NotBoundException | RemoteException e) {
+            System.err.println("PalindromeChecker client exception: " + e.toString());
+        }
+    }
+}
+
+
+
+
+Palindrome checker
+
+
+
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+public interface PalindromeChecker extends Remote {
+    public boolean checkPalindrome(String s) throws RemoteException;
+}

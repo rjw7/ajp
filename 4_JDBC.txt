@@ -1,0 +1,81 @@
+CREATE TABLE Players (
+    ID INT,
+    First_Name VARCHAR(255),
+    Last_Name VARCHAR(255),
+    Date_Of_Birth DATE,
+    Place_Of_Birth VARCHAR(255),
+    Country VARCHAR(255),
+    PRIMARY KEY (ID)
+);
+
+insert into Players values(1, 'Shikhar', 'Dhawan', DATE('1981-12-05'), 'Delhi', 'India');
+insert into Players values(2, 'Jonathan', 'Trott', DATE('1981-04-22'), 'CapeTown', 'SouthAfrica');
+insert into Players values(3, 'Kumara', 'Sangakkara', DATE('1977-10-27'), 'Matale', 'Srilanka');
+insert into Players values(4, 'Virat', 'Kohli', DATE('1988-11-05'), 'Delhi', 'India');
+insert into Players values(5, 'Rohit', 'Sharma', DATE('1987-04-30'), 'Nagpur', 'India');
+insert into Players values(6, 'Ravindra', 'Jadeja', DATE('1988-12-06'), 'Nagpur', 'India');
+insert into Players values(7, 'James', 'Anderson', DATE('1982-06-30'), 'Burnley', 'England');
+select * from Players;
+.
+.
+.
+.
+.
+.
+.
+package Jdbc;
+
+
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+public class JDBC {
+   public static void main(String args[]) throws SQLException {
+      //Registering the Driver
+      //DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+     // DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+      //Getting the connection
+      String mysqlUrl = "jdbc:mysql://localhost:3306/testdb1";
+      Connection con = DriverManager.getConnection(mysqlUrl, "root", "Password");
+      System.out.println("Connection established......");
+      //Creating the Statement
+      Statement stmt = con.createStatement();
+      //Insert a row into the MyPlayers table
+      PreparedStatement pstmt = con.prepareStatement("INSERT INTO MyPlayers values (?, ?, ?, ?, ?, ? )");
+      pstmt.setInt(1, 9);
+      pstmt.setString(2, "R");
+      pstmt.setString(3, "Mc");
+      pstmt.setDate(4, new Date(513596800000L));
+      pstmt.setString(5, "Ku");
+      pstmt.setNull(6, java.sql.Types.VARCHAR);
+      pstmt.executeUpdate();
+      //Query to retrieve records
+      String query = "Select * from MyPlayers";
+      //Executing the query
+      ResultSet rs = stmt.executeQuery(query);
+      //Verifying whether last row read was null
+      while(rs.next()) {
+         int id = rs.getInt("ID");
+         String first_name = rs.getString("First_Name");
+         String last_name = rs.getString("Last_Name");
+         Date date_of_birth = rs.getDate("Date_Of_Birth");
+         String place_of_birth = rs.getString("Place_Of_Birth");
+         String country = rs.getString("Country");
+         boolean bool = rs.wasNull();
+         if(bool) {
+            System.out.print("Id: "+id+", ");
+            System.out.print("First Name: "+first_name+", ");
+            System.out.print("Last Name: "+last_name+", ");
+            System.out.print("Date Of Birth: "+date_of_birth+", ");
+            System.out.print("Place Of Birth: "+place_of_birth+", ");
+            System.out.print("Country: "+country);
+            System.out.println(" ");
+         }
+      }
+   }
+}
+

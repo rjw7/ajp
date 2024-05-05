@@ -1,0 +1,110 @@
+Calculator java
+
+import java.rmi.Remote;
+import java.rmi.RemoteException;
+public interface Calculator extends Remote {
+int add(int x, int y) throws RemoteException;
+int subtract(int x, int y) throws RemoteException;
+int mul(int x, int y) throws RemoteException;;
+int mod(int x, int y) throws RemoteException;;
+int div(int x, int y) throws RemoteException;;
+}
+
+
+
+Calculator client
+
+
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+public class CalculatorClient {
+public static void main(String[] args) {
+try {
+// Get a reference to the RMI registry
+Registry registry =
+LocateRegistry.getRegistry("localhost");
+// Look up the remote object from the registry
+Calculator calculator = (Calculator)
+registry.lookup("Calculator");
+// Invoke the methods on the remote object
+int result = calculator.add(1, 2);
+System.out.println("1 + 2 = " + result);
+result = calculator.subtract(5, 3);
+System.out.println("5 - 3 = " + result);
+result = calculator.mul(5, 3);
+System.out.println("5 * 3 = " + result);
+result = calculator.mod(5, 3);
+System.out.println("5 % 3 = " + result);
+result = calculator.div(5, 3);
+System.out.println("5 / 3 = " + result);
+} catch (NotBoundException | RemoteException e) {
+System.err.println("CalculatorClient exception:");
+}
+}
+}
+
+
+Calculator impl
+
+
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+public class CalculatorImpl extends UnicastRemoteObject implements
+Calculator {
+public CalculatorImpl() throws RemoteException {
+super();
+}
+@Override
+public int add(int x, int y) throws RemoteException {
+return x + y;
+}
+@Override
+public int subtract(int x, int y) throws RemoteException {
+return x - y;
+}
+@Override
+public int mul(int x, int y) throws RemoteException {
+return x * y;
+}
+@Override
+public int mod(int x, int y) throws RemoteException {
+return x % y;
+}
+
+    /**
+     *
+     * @param x
+     * @param y
+     * @return
+     * @throws RemoteException
+     */
+    @Override
+public int div(int x, int y) throws RemoteException {
+return x / y;
+}
+}
+
+Calculator Server
+
+
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+public class CalculatorServer {
+public static void main(String[] args) {
+try {
+// Create an instance of the remote object
+Calculator calculator = new CalculatorImpl();
+// Get a reference to the RMI registry
+Registry registry = LocateRegistry.createRegistry(1099);
+// Bind the remote object to the registry
+registry.rebind("Calculator", calculator);
+System.out.println("CalculatorServer ready.");
+} catch (RemoteException e) {
+System.err.println("CalculatorServer exception:");
+}
+}
+}
+

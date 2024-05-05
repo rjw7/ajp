@@ -1,0 +1,70 @@
+1.Create new project.
+2.Click on File &gt; New Project
+3. Clcik on Java with Maven &gt; Java Application
+4. Give project name &gt; Click on Finish
+Now to create JFrame box
+1.Click on Projects(left hand side present)&gt;Go to the project(created with the name)&gt; click
+on source package
+2.Right click on source package &gt; click on new &gt; Jframe Form
+3.Give name to the JFrame form &gt; Click on Finish
+Now go on design tab
+1. Select Panel(adjust according to your window size)
+2.Click on label &gt; paste on panel &gt; right click on it &gt; edit text &gt; Student name
+3.Click on label &gt; paste on panel &gt; right click on it &gt; edit text &gt; Maths
+4.Click on label &gt; paste on panel &gt; right click on it &gt; edit text &gt; Science
+5.Click on label &gt; paste on panel &gt; right click on it &gt; edit text &gt; English
+Now from Swing Control
+1.Select textfield &gt; paste it near to the student name(to enter the name) &gt; right click on box
+&gt;Click on change variable name &gt; enter(txtName)
+2.Select textfield &gt; paste it near to the maths &gt; right click on box &gt;Click on change variable
+name &gt; enter(txtMaths)
+3.Select textfield &gt; paste it near to the science &gt; right click on box &gt;Click on change variable
+name &gt; enter(txtSci)
+4.Select textfield &gt; paste it near to the english &gt; right click on box &gt;Click on change variable
+name &gt; enter(txtEng)
+Now again select panel to calculate total,avg and grade
+1.Follow the same steps as the above steps select label &gt;paste on panel &gt;right click on it&gt; edit
+text &gt; Total
+Same do for average and grade
+2. Now select textfield &gt;paste it near to total &gt;right clcik on the box &gt;Click on change
+variable name &gt; enter(lbltot)
+Same do near avg and grade
+Now select button
+edit text &gt; enter(Calc)
+double click on Calc
+wirte code for Calc :
+
+double maths,science,english,tot,avg;
+String grade;
+maths = Integer.parseInt(txtMaths.getText());
+science = Integer.parseInt(txtSci.getText());
+english = Integer.parseInt(txtEng.getText());
+tot = maths + science + english;
+avg = tot/3;
+
+if(avg&gt;=85)
+{
+grade = &quot;A&quot;;
+}
+else if(avg&gt;=75)
+{
+grade = &quot;B&quot;;
+}
+else if(avg&gt;=65)
+{
+grade = &quot;C&quot;;
+}
+else if(avg&gt;=45)
+{
+grade = &quot;S&quot;;
+}
+else
+{
+grade = &quot;F&quot;;
+}
+lbltot.setText(String.valueOf(tot));
+lblAvg.setText(String.valueOf(avg));
+lblGrade.setText(grade);
+Save the file
+How to run the code
+Right click near the code &gt; Click on Run File or Press Shift + F6s

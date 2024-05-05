@@ -1,0 +1,24 @@
+package inetadress;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Scanner;
+public class InetADRESS {
+     public static void main(String[] args) {
+
+        Scanner sc=new Scanner(System.in);
+        System.out.println("Enter Host Name");
+        String host=sc.next();
+        try
+        {
+            InetAddress ip=InetAddress.getByName(host);
+            System.out.println("Ip Address is:"+ip.getHostAddress());
+        }
+        
+        catch(UnknownHostException e)
+        {
+            System.out.println(e);
+        }
+                
+    }
+}
